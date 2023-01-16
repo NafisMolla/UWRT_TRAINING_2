@@ -15,7 +15,7 @@ private:
 rclcpp::Client<turtlesim::srv::Kill>::SharedPtr client_;
 
 //array with all the possible names for the turtles
-std::vector<std::string> turtle_name = {"turlte1","moving_turtle","stationary_turtle"};
+std::vector<std::string> turtle_name = {"turtle1","moving_turtle","stationary_turtle"};
 
 
 void call_kill_service();

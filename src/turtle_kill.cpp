@@ -8,6 +8,7 @@ namespace kill_all_composition{
         //this is the service we want to call
         client_ = this->create_client<turtlesim::srv::Kill>("/kill");
         RCLCPP_INFO(this->get_logger(), "THIS IS WORKING LETS GOOOOO");
+        this->call_kill_service();
         
         
     }
@@ -23,9 +24,21 @@ namespace kill_all_composition{
         }
 
         //for every possible turtle available we will call the kill command on it
-
         for(std::string name:turtle_name){
-            RCLCPP_INFO(this->get_logger(), "%s",name);
+
+            //make a request object 
+            auto request = std::make_shared<turtlesim::srv::Kill::Request>();
+            request->name = name;
+
+            auto callback_client_ = [this,name] (rclcpp::Client<turtlesim::srv::Kill>::SharedFuture response) -> void{
+                (void) response;
+                RCLCPP_INFO(this->get_logger(), "Turtle %s Killed", name.c_str());
+                rclcpp::shutdown();
+
+            };
+            auto result = client_->async_send_request(request,callback_client_);
+
+
         }
 
 
