@@ -41,12 +41,8 @@ namespace kill_all_composition{
 
         }
 
-
-
     }
     
-
-
 
 }
 

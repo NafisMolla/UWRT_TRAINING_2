@@ -25,10 +25,15 @@ def generate_launch_description():
             package='rclcpp_components',
             executable='component_container',
             composable_node_descriptions=[
+            #     ComposableNode(
+            #         package='software_training',
+            #    plugin='kill_all_composition::kill_all_turtle_service_call',
+            #         name='kill_all_turtles',
+            #         )
                 ComposableNode(
                     package='software_training',
-               plugin='kill_all_composition::kill_all_turtle_service_call',
-                    name='kill_all_turtles',
+               plugin='circular_move_namespace::turtle_move_circular',
+                    name='move_turtle',
                     )
             ],
             output='screen',

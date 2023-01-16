@@ -24,7 +24,7 @@ find_package(std_msgs REQUIRED)
 # find_package(rcutils REQUIRED)
 # find_package(rcl REQUIRED)
 # find_package(rclcpp_action REQUIRED)
-# find_package(geometry_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 # find_package(builtin_interfaces REQUIRED)
 # find_package(rosidl_default_generators REQUIRED)
 
@@ -46,7 +46,7 @@ set(node_plugins "")
 
 #add plugins as SHARED library 
 
-#add turtle_request_service_node as a plugin
+#add kill_all_turtle_service 
 add_library(kill_alive SHARED 
 	src/turtle_kill.cpp)
 target_compile_definitions(kill_alive
@@ -59,6 +59,21 @@ ament_target_dependencies(kill_alive
 rclcpp_components_register_nodes(kill_alive "kill_all_composition::kill_all_turtle_service_call")
 # this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
 set(node_plugins "${node_plugins}kill_all_composition::kill_all_turtle_service_call;$<TARGET_FILE:kill_alive>\n")
+
+
+add_library(move_turtle_circle SHARED 
+	src/turtle_move_circle.cpp)
+target_compile_definitions(move_turtle_circle
+	PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(move_turtle_circle
+	"rclcpp"
+	"rclcpp_components"
+	"turtlesim"
+	"geometry_msgs"
+	"std_msgs")
+rclcpp_components_register_nodes(move_turtle_circle "circlular_move_namespace::turtle_move_circular")
+# this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
+set(node_plugins "${node_plugins}circlular_move_namespace::turtle_move_circular;$<TARGET_FILE:move_turtle_circle>\n")
 
 
 
