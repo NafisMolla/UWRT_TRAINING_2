@@ -5,15 +5,17 @@ namespace circular_move_namespace{
 
 
     turtle_move_circular::turtle_move_circular(const rclcpp::NodeOptions &options)
-    : Node("cmd_", options){
-        cmd_vel_publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel",10);
+    : Node("cmd_publisher", options){
+
+        RCLCPP_INFO(this->get_logger(),"working");
+        cmd_vel_publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/turtle1/cmd_vel",10);
 
         auto callback = [this](void) -> void{
             auto msg = geometry_msgs::msg::Twist();
 
-            msg.linear.x = 12;
-            msg.linear.y = 12;
-            msg.linear.z = 12;
+            msg.linear.x = 3;
+            msg.linear.y = 3;
+            msg.linear.z = 3;
 
             msg.angular.x = 1.41;
             msg.angular.y = 1.41;

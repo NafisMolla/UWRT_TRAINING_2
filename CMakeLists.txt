@@ -80,7 +80,7 @@ set(node_plugins "${node_plugins}circular_move_namespace::turtle_move_circular;$
 #tell where to put binaries
 install(TARGETS
 	kill_alive
-	
+	move_turtle_circle
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib 
 	RUNTIME DESTINATION bin)
