@@ -71,9 +71,9 @@ ament_target_dependencies(move_turtle_circle
 	"turtlesim"
 	"geometry_msgs"
 	"std_msgs")
-rclcpp_components_register_nodes(move_turtle_circle "circlular_move_namespace::turtle_move_circular")
+rclcpp_components_register_nodes(move_turtle_circle "circular_move_namespace::turtle_move_circular")
 # this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
-set(node_plugins "${node_plugins}circlular_move_namespace::turtle_move_circular;$<TARGET_FILE:move_turtle_circle>\n")
+set(node_plugins "${node_plugins}circular_move_namespace::turtle_move_circular;$<TARGET_FILE:move_turtle_circle>\n")
 
 
 
