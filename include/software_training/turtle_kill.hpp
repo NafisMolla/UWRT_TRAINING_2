@@ -11,14 +11,14 @@ public:
     explicit kill_all_turtle_service_call(const rclcpp::NodeOptions &options);
 
 private:
-//client pointer
-rclcpp::Client<turtlesim::srv::Kill>::SharedPtr client_;
+    //client pointer
+    rclcpp::Client<turtlesim::srv::Kill>::SharedPtr client_;
 
-//array with all the possible names for the turtles
-std::vector<std::string> turtle_name = {"turtle1","moving_turtle","stationary_turtle"};
+    //array with all the possible names for the turtles
+    std::vector<std::string> turtle_name = {"turtle1","moving_turtle","stationary_turtle"};
 
 
-void call_kill_service();
+    void call_kill_service();
 
 };
 

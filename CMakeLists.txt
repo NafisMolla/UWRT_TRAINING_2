@@ -75,12 +75,27 @@ rclcpp_components_register_nodes(move_turtle_circle "circular_move_namespace::tu
 # this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
 set(node_plugins "${node_plugins}circular_move_namespace::turtle_move_circular;$<TARGET_FILE:move_turtle_circle>\n")
 
+add_library(spawn_turtle SHARED 
+	src/turtle_spawn.cpp)
+target_compile_definitions(spawn_turtle
+	PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(spawn_turtle
+	"rclcpp"
+	"rclcpp_components"
+	"turtlesim"
+	"geometry_msgs"
+	"std_msgs")
+rclcpp_components_register_nodes(spawn_turtle "spawn_composition::spawn_turtle")
+# this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
+set(node_plugins "${node_plugins}spawn_composition::spawn_turtle;$<TARGET_FILE:spawn_turtle>\n")
+
 
 
 #tell where to put binaries
 install(TARGETS
 	kill_alive
 	move_turtle_circle
+	spawn_turtle
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib 
 	RUNTIME DESTINATION bin)

@@ -29,11 +29,16 @@ def generate_launch_description():
             #         package='software_training',
             #    plugin='kill_all_composition::kill_all_turtle_service_call',
             #         name='kill_all_turtles',
+            #         ),
+            #     ComposableNode(
+            #         package='software_training',
+            #    plugin='circular_move_namespace::turtle_move_circular',
+            #         name='move_turtle',
             #         )
-                ComposableNode(
+            ComposableNode(
                     package='software_training',
-               plugin='circular_move_namespace::turtle_move_circular',
-                    name='move_turtle',
+               plugin='spawn_composition::spawn_turtle',
+                    name='spawn_turtle',
                     )
             ],
             output='screen',
