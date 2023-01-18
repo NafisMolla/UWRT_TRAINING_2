@@ -63,7 +63,7 @@ def generate_launch_description():
         #container for turtle spawn service call
         turtle_spawn = ComposableNodeContainer(
                 name='node_container',
-                namespace='',
+                namespace='ff',
                 package='rclcpp_components',
                 executable='component_container',
                 composable_node_descriptions=[
@@ -77,9 +77,49 @@ def generate_launch_description():
 
 
         #container for turtle move service call
+        turtle_reset = ComposableNodeContainer(
+                name='node_container',
+                namespace='',
+                package='rclcpp_components',
+                executable='component_container',
+                composable_node_descriptions=[
+                        ComposableNode(
+                                package='software_training',
+                                plugin='turtle_composition::teleport_turtle',
+                                name='teleport_turtle',
+                        )
+                ]
+        )
+
+
+        service_name = " /reset_moving_turtle"
+        service_location = " training_interfaces/srv/TurtleReset"
+        call_service = ExecuteProcess(
+                cmd=[[
+                FindExecutable(name='ros2'),
+                ' service call',
+                service_name,
+                service_location
+                ]],
+                shell=True
+        )
 
 
         #container for publisher
+        turtle_distance = ComposableNodeContainer(
+                name='node_container',
+                namespace='',
+                package='rclcpp_components',
+                executable='component_container',
+                composable_node_descriptions=[
+                        ComposableNode(
+                                package='software_training',
+                                plugin='turtle_composition::turtle_distance_publisher',
+                                name='turtle_distance',
+                        )
+                ]
+        )
+
 
 
         continuous_node_container = ComposableNodeContainer(
@@ -140,7 +180,7 @@ def generate_launch_description():
         ds = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
                         target_action=turtle_move_circle,
-                        on_completion=[turtle_clear],
+                        on_completion=[turtle_spawn],
                 )
         )
 
@@ -148,12 +188,24 @@ def generate_launch_description():
 
         ts = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
-                        target_action=turtle_clear,
-                        on_completion=[turtle_spawn],
+                        target_action=turtle_spawn,
+                        on_completion=[turtle_clear,turtle_spawn],
                 )
         )
+
+        #reset
+        ys = TimerAction(period=3.0,actions=[call_service])
+
+        ms = RegisterEventHandler(
+                event_handler=OnExecutionComplete(
+                        target_action=turtle_spawn,
+                        on_completion=[turtle_reset,turtle_distance,ys],
+                )
+        )
+
+        
         #-------------------------------------------------------------------------------
 
 
-        return launch.LaunchDescription([launch_turtlesim,gs,ds,ts])
+        return launch.LaunchDescription([launch_turtlesim,gs,ds,ms])
         # return launch.LaunchDescription([ds,test1])

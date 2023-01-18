@@ -13,7 +13,7 @@ namespace spawn_composition
         turtle_info stationary;
         turtle_info moving_turtle;
         //set stationary
-        stationary.x = 5;
+        stationary.x = 8;
         stationary.y = 5;
         stationary.theta = 0;
 

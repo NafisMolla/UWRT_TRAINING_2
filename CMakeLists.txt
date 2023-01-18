@@ -106,6 +106,21 @@ rclcpp_components_register_nodes(teleport_turtle "turtle_composition::teleport_t
 # this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
 set(node_plugins "${node_plugins}turtle_composition::teleport_turtle;$<TARGET_FILE:teleport_turtle>\n")
 
+add_library(turtle_distance SHARED 
+	src/distance_publisher.cpp)
+target_compile_definitions(turtle_distance
+	PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(turtle_distance
+	"rclcpp"
+	"rclcpp_components"
+	"training_interfaces"
+	"turtlesim"
+	"geometry_msgs"
+	"std_msgs")
+rclcpp_components_register_nodes(turtle_distance "turtle_composition::turtle_distance_publisher")
+# this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
+set(node_plugins "${node_plugins}turtle_composition::turtle_distance_publisher;$<TARGET_FILE:turtle_distance>\n")
+
 
 #tell where to put binaries
 install(TARGETS
@@ -113,6 +128,7 @@ install(TARGETS
 	move_turtle_circle
 	spawn_turtle
 	teleport_turtle
+	turtle_distance
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib 
 	RUNTIME DESTINATION bin)
