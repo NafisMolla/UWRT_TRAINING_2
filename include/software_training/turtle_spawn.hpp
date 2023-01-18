@@ -18,6 +18,7 @@ namespace spawn_composition
             float theta;
         } turtle_info;
 
+        int counter;
         void spawn_turtle_callback();
 
         turtle_info stationary;

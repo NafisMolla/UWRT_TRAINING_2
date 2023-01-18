@@ -10,6 +10,7 @@ namespace circular_move_namespace{
             explicit turtle_move_circular(const rclcpp::NodeOptions &options);
 
         private:
+            int counter;
             rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_publisher_;
             rclcpp::TimerBase::SharedPtr timer_;
 

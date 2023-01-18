@@ -18,8 +18,8 @@ namespace spawn_composition
         stationary.theta = 0;
 
         //set moving
-        moving_turtle.x = 25;
-        moving_turtle.y = 10;
+        moving_turtle.x = 10;
+        moving_turtle.y = 7;
         moving_turtle.theta = 0;
         
         turtle_bio.push_back(stationary);

@@ -21,6 +21,7 @@ find_package(rclcpp REQUIRED)
 find_package(turtlesim REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(training_interfaces REQUIRED)
 # find_package(rcutils REQUIRED)
 # find_package(rcl REQUIRED)
 # find_package(rclcpp_action REQUIRED)
@@ -90,12 +91,28 @@ rclcpp_components_register_nodes(spawn_turtle "spawn_composition::spawn_turtle")
 set(node_plugins "${node_plugins}spawn_composition::spawn_turtle;$<TARGET_FILE:spawn_turtle>\n")
 
 
+add_library(teleport_turtle SHARED 
+	src/turtle_teleport.cpp)
+target_compile_definitions(teleport_turtle
+	PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(teleport_turtle
+	"rclcpp"
+	"rclcpp_components"
+	"training_interfaces"
+	"turtlesim"
+	"geometry_msgs"
+	"std_msgs")
+rclcpp_components_register_nodes(teleport_turtle "turtle_composition::teleport_turtle")
+# this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
+set(node_plugins "${node_plugins}turtle_composition::teleport_turtle;$<TARGET_FILE:teleport_turtle>\n")
+
 
 #tell where to put binaries
 install(TARGETS
 	kill_alive
 	move_turtle_circle
 	spawn_turtle
+	teleport_turtle
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib 
 	RUNTIME DESTINATION bin)
