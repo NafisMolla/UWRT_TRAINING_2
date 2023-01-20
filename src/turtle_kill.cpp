@@ -33,7 +33,7 @@ namespace kill_all_composition{
             auto callback_client_ = [this,name] (rclcpp::Client<turtlesim::srv::Kill>::SharedFuture response) -> void{
                 (void) response;
                 RCLCPP_INFO(this->get_logger(), "Turtle %s Killed", name.c_str());
-                rclcpp::shutdown();
+                // rclcpp::shutdown();
 
             };
             auto result = client_->async_send_request(request,callback_client_);

@@ -27,7 +27,7 @@ def generate_launch_description():
         #-------------------------------container for turtle_clear-----------------------------------
         
         turtle_clear = ComposableNodeContainer(
-                name='node_container',
+                name='node_container1',
                 namespace='',
                 package='rclcpp_components',
                 executable='component_container',
@@ -47,7 +47,7 @@ def generate_launch_description():
 
         #container for turtlespawn
         turtle_move_circle = ComposableNodeContainer(
-                name='node_container',
+                name='node_container2',
                 namespace='',
                 package='rclcpp_components',
                 executable='component_container',
@@ -62,8 +62,8 @@ def generate_launch_description():
 
         #container for turtle spawn service call
         turtle_spawn = ComposableNodeContainer(
-                name='node_container',
-                namespace='ff',
+                name='node_container3',
+                namespace='',
                 package='rclcpp_components',
                 executable='component_container',
                 composable_node_descriptions=[
@@ -78,7 +78,7 @@ def generate_launch_description():
 
         #container for turtle move service call
         turtle_reset = ComposableNodeContainer(
-                name='node_container',
+                name='node_container4',
                 namespace='',
                 package='rclcpp_components',
                 executable='component_container',
@@ -107,7 +107,7 @@ def generate_launch_description():
 
         #container for publisher
         turtle_distance = ComposableNodeContainer(
-                name='node_container',
+                name='node_container5',
                 namespace='',
                 package='rclcpp_components',
                 executable='component_container',
@@ -184,12 +184,11 @@ def generate_launch_description():
                 )
         )
 
-        #call spawn after clear
-
+        #call spawn after clear THIS IS THE BROKEN ONE
         ts = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
                         target_action=turtle_spawn,
-                        on_completion=[turtle_clear,turtle_spawn],
+                        on_completion=[turtle_clear],
                 )
         )
 
@@ -205,7 +204,5 @@ def generate_launch_description():
 
         
         #-------------------------------------------------------------------------------
-
-
-        return launch.LaunchDescription([launch_turtlesim,gs,ds,ms])
-        # return launch.LaunchDescription([ds,test1])
+        # return launch.LaunchDescription([launch_turtlesim,gs,ds,ms])
+        return launch.LaunchDescription([launch_turtlesim,gs,ds,ts])
