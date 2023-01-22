@@ -190,7 +190,7 @@ def generate_launch_description():
         )
 
         timer_test = launch.actions.TimerAction(
-                period=7.0,
+                period=15.0,
                 actions=[turtle_clear]
         )
         
