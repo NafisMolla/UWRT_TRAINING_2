@@ -22,21 +22,19 @@ find_package(turtlesim REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(training_interfaces REQUIRED)
-# find_package(rcutils REQUIRED)
-# find_package(rcl REQUIRED)
-# find_package(rclcpp_action REQUIRED)
+find_package(rcutils REQUIRED)
+find_package(rcl REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(geometry_msgs REQUIRED)
-# find_package(builtin_interfaces REQUIRED)
-# find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 
 #include the 'include' directory
 include_directories(include)
 
-# custom services and messages and actions
+# # custom services and messages and actions
 # rosidl_generate_interfaces(${PROJECT_NAME}
-# 	"msg/Software.msg"
-# 	"srv/Software.srv"
 # 	"action/Software.action"
 # 	DEPENDENCIES std_msgs geometry_msgs builtin_interfaces
 # 	)
@@ -121,6 +119,25 @@ rclcpp_components_register_nodes(turtle_distance "turtle_composition::turtle_dis
 # this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
 set(node_plugins "${node_plugins}turtle_composition::turtle_distance_publisher;$<TARGET_FILE:turtle_distance>\n")
 
+add_library(turtle_action SHARED 
+	src/turtle_action_server.cpp)
+target_compile_definitions(turtle_action
+	PRIVATE "COMPOSITION_BUILDING_DLL")
+ament_target_dependencies(turtle_action
+	"rclcpp"
+	"rclcpp_components"
+	"training_interfaces"
+	"turtlesim"
+	"rclcpp_action"
+	"geometry_msgs"
+	"std_msgs")
+# rosidl_target_interfaces(turtle_action ${PROJECT_NAME} "rosidl_typesupport_cpp") # needed for custom action
+rclcpp_components_register_nodes(turtle_action "turtle_composition::turtle_action_server")
+# this way we can execute the component with - ros2 component standalone software_training composition::turtle_service_request_node
+set(node_plugins "${node_plugins}turtle_composition::turtle_action_server;$<TARGET_FILE:turtle_action>\n")
+
+
+
 
 #tell where to put binaries
 install(TARGETS
@@ -129,6 +146,7 @@ install(TARGETS
 	spawn_turtle
 	teleport_turtle
 	turtle_distance
+	turtle_action
 	ARCHIVE DESTINATION lib
 	LIBRARY DESTINATION lib 
 	RUNTIME DESTINATION bin)
@@ -138,11 +156,5 @@ install(DIRECTORY
 	launch
 	DESTINATION share/${PROJECT_NAME}
 	)
-
-#install configuration file (yaml files) for param server
-# install(DIRECTORY
-# 	config
-# 	DESTINATION share/${PROJECT_NAME}
-# 	)
 
 ament_package()

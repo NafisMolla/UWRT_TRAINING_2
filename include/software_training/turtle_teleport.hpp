@@ -15,7 +15,7 @@ namespace turtle_composition
         typedef struct turtle_info
         {
             constexpr static float x = 5.44;
-            constexpr static float y = .44;
+            constexpr static float y = 5.44;
             constexpr static float theta = 0;
         } turtle_info;
 

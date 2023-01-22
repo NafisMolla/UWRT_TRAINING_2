@@ -120,6 +120,33 @@ def generate_launch_description():
                 ]
         )
 
+        # action stuff
+        action_server = ComposableNodeContainer(
+                name='node_container6',
+                namespace='',
+                package='rclcpp_components',
+                executable='component_container',
+                composable_node_descriptions=[
+                        ComposableNode(
+                                package='software_training',
+                                plugin='turtle_composition::turtle_action_server',
+                                name='turtle_action_server',
+                        )
+                ]
+        )
+        action_location = " training_interfaces/action/Software"
+        action_name = " /software_action_"
+        call_action = ExecuteProcess(
+        cmd=[[
+            FindExecutable(name='ros2'),
+            ' action send_goal ',
+            action_name,
+            action_location,
+            ' " {x: 0 , y: 0}"'
+        ]],
+        shell=True
+    )
+
 
 
         continuous_node_container = ComposableNodeContainer(
@@ -163,8 +190,8 @@ def generate_launch_description():
         )
 
         timer_test = launch.actions.TimerAction(
-                period=10.0,
-                actions=[turtle_spawn]
+                period=5.0,
+                actions=[turtle_clear]
         )
         
         
@@ -188,21 +215,21 @@ def generate_launch_description():
         ts = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
                         target_action=turtle_spawn,
-                        on_completion=[turtle_clear],
+                        on_completion=[timer_test],
                 )
         )
 
         #reset
         ys = TimerAction(period=3.0,actions=[call_service])
+        
 
         ms = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
                         target_action=turtle_spawn,
-                        on_completion=[turtle_reset,turtle_distance,ys],
-                )
+                        on_completion=[turtle_distance,TimerAction(period=2.0,actions=[action_server]),TimerAction(period=3.0,actions=[call_action])])
         )
 
         
         #-------------------------------------------------------------------------------
-        # return launch.LaunchDescription([launch_turtlesim,gs,ds,ms])
-        return launch.LaunchDescription([launch_turtlesim,gs,ds,ts])
+        return launch.LaunchDescription([launch_turtlesim,gs,ds,ms])
+        # return launch.LaunchDescription([launch_turtlesim,gs,ds,ts])
