@@ -142,7 +142,7 @@ def generate_launch_description():
             ' action send_goal ',
             action_name,
             action_location,
-            ' " {x: 0 , y: 0}"'
+            ' " {x: 7 , y: 7}"'
         ]],
         shell=True
     )
@@ -190,7 +190,7 @@ def generate_launch_description():
         )
 
         timer_test = launch.actions.TimerAction(
-                period=5.0,
+                period=7.0,
                 actions=[turtle_clear]
         )
         
@@ -199,7 +199,7 @@ def generate_launch_description():
         gs = RegisterEventHandler(
                 event_handler=OnProcessStart(
                         target_action=launch_turtlesim,
-                        on_start=[turtle_move_circle],
+                        on_start=[turtle_move_circle,turtle_spawn],
                 )
         )
         
@@ -225,8 +225,8 @@ def generate_launch_description():
 
         ms = RegisterEventHandler(
                 event_handler=OnExecutionComplete(
-                        target_action=turtle_spawn,
-                        on_completion=[turtle_distance,TimerAction(period=2.0,actions=[action_server]),TimerAction(period=3.0,actions=[call_action])])
+                        target_action=turtle_move_circle,
+                        on_completion=[turtle_distance,turtle_reset,ys,TimerAction(period=4.0,actions=[action_server]),TimerAction(period=5.0,actions=[call_action]),timer_test])
         )
 
         

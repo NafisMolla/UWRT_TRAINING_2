@@ -20,7 +20,7 @@ namespace turtle_composition{
 
         //create publisher to cmd_vel
         publisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/moving_turtle/cmd_vel",10);
-        RCLCPP_INFO(this->get_logger(),"action is working");
+        // RCLCPP_INFO(this->get_logger(),"action is working");
 
 
 
@@ -33,7 +33,6 @@ namespace turtle_composition{
             this->moving_turtle.theta = msg->theta;
             this->moving_turtle.linear_velocity = msg->linear_velocity;
             this->moving_turtle.angular_velocity = msg->angular_velocity;
-            RCLCPP_INFO(this->get_logger(),"action is working");
 
         };
         
@@ -78,7 +77,7 @@ namespace turtle_composition{
         auto start_time = this->now();
 
         //set the loop rate
-        rclcpp::Rate loop_rate(1);
+        rclcpp::Rate loop_rate(5);
 
         //getting the goal
         const auto goal = goal_handle->get_goal();
@@ -94,8 +93,8 @@ namespace turtle_composition{
         auto final_y = goal->y;
 
         //setting a velocity for the turtle in the x and y direction 
-        float vel_x = 0.25;
-        float vel_y = 0.25;
+        float vel_x = (final_x - moving_turtle.x)/0.2;
+        float vel_y = (final_y - moving_turtle.y)/0.2;
 
         //this is the margin of error
         float MOE = 0.5;

@@ -75,6 +75,9 @@ namespace spawn_composition
         
         
         }
+        int i =0;
+
+        while(i<10000) i++;
 
         
 
